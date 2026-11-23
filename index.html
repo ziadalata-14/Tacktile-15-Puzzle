@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>VAULT CIPHER — Tactile 15-Puzzle (WebXR)</title>
+  <title>VAULT CIPHER — Challenge Edition (WebXR)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-user-select: none; }
     body {
@@ -22,7 +22,7 @@
       align-items: center;
       justify-content: center;
       z-index: 30;
-      background: radial-gradient(circle at center, rgba(7, 9, 13, 0.22) 0%, rgba(5, 7, 11, 0.72) 100%);
+      background: radial-gradient(circle at center, rgba(7, 9, 13, 0.22) 0%, rgba(5, 7, 11, 0.76) 100%);
       transition: opacity 0.6s ease, visibility 0.6s ease;
     }
     #intro-overlay.hidden {
@@ -31,14 +31,14 @@
       pointer-events: none;
     }
     .intro-card {
-      width: min(92vw, 520px);
-      background: linear-gradient(160deg, rgba(16, 20, 28, 0.86), rgba(9, 12, 18, 0.92));
+      width: min(94vw, 540px);
+      background: linear-gradient(160deg, rgba(16, 20, 28, 0.88), rgba(9, 12, 18, 0.94));
       border: 1.5px solid rgba(212, 168, 83, 0.55);
       border-radius: 18px;
-      padding: 28px 26px 24px;
+      padding: 24px 24px 22px;
       text-align: center;
       backdrop-filter: blur(14px);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 232, 179, 0.22);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.78), inset 0 1px 0 rgba(255, 232, 179, 0.22);
       position: relative;
       overflow: hidden;
     }
@@ -61,10 +61,10 @@
       letter-spacing: 4px;
       color: #d4a853;
       opacity: 0.92;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
     .intro-title {
-      font-size: clamp(30px, 6vw, 44px);
+      font-size: clamp(28px, 6vw, 42px);
       font-weight: 900;
       letter-spacing: 3px;
       background: linear-gradient(180deg, #fff4d2 0%, #d4a853 52%, #8a6424 100%);
@@ -74,23 +74,23 @@
       line-height: 1.08;
     }
     .intro-sub {
-      font-size: 12px;
-      letter-spacing: 5px;
+      font-size: 11px;
+      letter-spacing: 4.5px;
       color: #94a3b8;
-      margin-top: 6px;
-      margin-bottom: 20px;
+      margin-top: 5px;
+      margin-bottom: 16px;
     }
     .cfg-label {
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 2.5px;
+      letter-spacing: 2.2px;
       color: #64748b;
-      margin: 12px 0 7px;
+      margin: 11px 0 6px;
       text-transform: uppercase;
     }
     .pill-row {
       display: flex;
-      gap: 8px;
+      gap: 7px;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -99,28 +99,35 @@
       color: #94a3b8;
       border: 1px solid rgba(148, 163, 184, 0.24);
       border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 12px;
+      padding: 7px 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
       cursor: pointer;
       transition: all 0.16s ease;
     }
     .pill-btn:hover { border-color: rgba(212, 168, 83, 0.65); color: #f8fafc; }
     .pill-btn.active {
-      background: rgba(212, 168, 83, 0.18);
+      background: rgba(212, 168, 83, 0.2);
       border-color: #d4a853;
       color: #fef3c7;
       box-shadow: 0 0 14px rgba(212, 168, 83, 0.22);
     }
+    .level-desc {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-top: 8px;
+      min-height: 18px;
+    }
+    .level-desc b { color: #facc15; }
     .launch-row {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 9px;
-      margin-top: 22px;
+      gap: 8px;
+      margin-top: 18px;
     }
     .launch-btn {
-      padding: 12px 16px;
+      padding: 11px 16px;
       border-radius: 10px;
       font-size: 13px;
       font-weight: 800;
@@ -151,7 +158,7 @@
     .launch-xr-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 9px;
+      gap: 8px;
     }
 
     /* --- In-Game Top HUD --- */
@@ -174,7 +181,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      background: rgba(11, 15, 22, 0.78);
+      background: rgba(11, 15, 22, 0.8);
       border: 1px solid rgba(212, 168, 83, 0.35);
       border-radius: 10px;
       padding: 6px 10px;
@@ -188,6 +195,7 @@
       padding: 0 6px;
     }
     .hud-stat b { color: #fef3c7; font-variant-numeric: tabular-nums; }
+    .hud-stat b.danger { color: #ef4444; }
     .hud-btn {
       background: rgba(30, 38, 52, 0.9);
       color: #e2e8f0;
@@ -200,7 +208,9 @@
       cursor: pointer;
     }
     .hud-btn:hover { border-color: #d4a853; color: #fff; }
-    #hint {
+    .hud-btn.active { border-color: #38bdf8; color: #7dd3fc; background: rgba(14, 165, 233, 0.2); }
+
+    #hint-bar {
       position: fixed;
       bottom: 14px;
       left: 50%;
@@ -218,28 +228,41 @@
       transition: opacity 0.4s ease;
       white-space: nowrap;
     }
-    #hint.visible { opacity: 1; }
+    #hint-bar.visible { opacity: 1; }
 
-    /* --- Solved Toast --- */
-    #solved-toast {
+    /* --- Result Toast (Win / Time Expired) --- */
+    #result-toast {
       position: fixed;
       bottom: 58px;
       left: 50%;
       transform: translateX(-50%) translateY(16px);
-      background: rgba(12, 18, 26, 0.92);
+      background: rgba(12, 18, 26, 0.94);
       border: 1.5px solid #22c55e;
-      border-radius: 12px;
-      padding: 12px 24px;
+      border-radius: 14px;
+      padding: 14px 24px;
       text-align: center;
       opacity: 0;
       pointer-events: none;
       transition: all 0.3s ease;
       z-index: 20;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
     }
-    #solved-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    #solved-toast h3 { color: #4ade80; font-size: 16px; letter-spacing: 2px; }
-    #solved-toast p { color: #cbd5e1; font-size: 12px; margin-top: 3px; }
+    #result-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+    #result-toast.fail { border-color: #ef4444; }
+    #result-toast h3 { color: #4ade80; font-size: 17px; letter-spacing: 2px; }
+    #result-toast.fail h3 { color: #f87171; }
+    #result-toast p { color: #cbd5e1; font-size: 12px; margin-top: 4px; }
+    #result-toast button {
+      margin-top: 10px;
+      background: rgba(212, 168, 83, 0.25);
+      border: 1px solid #d4a853;
+      color: #fffbeb;
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -249,7 +272,7 @@
     <div class="intro-card">
       <div class="brand-tag">ZEE GAMES PRESENTS</div>
       <div class="intro-title">VAULT CIPHER</div>
-      <div class="intro-sub">TACTILE 15-PUZZLE</div>
+      <div class="intro-sub">TACTILE 15-PUZZLE • CHALLENGE EDITION</div>
 
       <div class="cfg-label">Material Theme</div>
       <div class="pill-row">
@@ -257,12 +280,33 @@
         <button class="pill-btn" data-theme="wood">HEIRLOOM WOOD</button>
       </div>
 
-      <div class="cfg-label">Grid Size</div>
+      <div class="cfg-label">Game Mode</div>
       <div class="pill-row">
-        <button class="pill-btn" data-size="3">3×3</button>
-        <button class="pill-btn active" data-size="4">4×4</button>
-        <button class="pill-btn" data-size="5">5×5</button>
-        <button class="pill-btn" data-size="6">6×6</button>
+        <button class="pill-btn active" data-mode="challenge">CHALLENGE LEVELS</button>
+        <button class="pill-btn" data-mode="free">FREE PLAY</button>
+      </div>
+
+      <div id="challenge-picker">
+        <div class="cfg-label">Select Challenge Level</div>
+        <div class="pill-row">
+          <button class="pill-btn active" data-level="0">LVL 1</button>
+          <button class="pill-btn" data-level="1">LVL 2</button>
+          <button class="pill-btn" data-level="2">LVL 3</button>
+          <button class="pill-btn" data-level="3">LVL 4</button>
+          <button class="pill-btn" data-level="4">LVL 5</button>
+          <button class="pill-btn" data-level="5">LVL 6</button>
+        </div>
+        <div class="level-desc" id="level-desc">Level 1: <b>3×3 Warm-Up Vault</b> — Solve in <b>00:45</b></div>
+      </div>
+
+      <div id="free-picker" style="display:none;">
+        <div class="cfg-label">Grid Size</div>
+        <div class="pill-row">
+          <button class="pill-btn" data-size="3">3×3</button>
+          <button class="pill-btn active" data-size="4">4×4</button>
+          <button class="pill-btn" data-size="5">5×5</button>
+          <button class="pill-btn" data-size="6">6×6</button>
+        </div>
       </div>
 
       <div class="launch-row">
@@ -278,26 +322,28 @@
   <!-- Compact In-Game HUD -->
   <div id="hud">
     <div class="hud-group">
+      <span class="hud-stat" id="hud-mode-label">LVL <b>1</b></span>
       <span class="hud-stat">MOVES <b id="hud-moves">0</b></span>
-      <span class="hud-stat">TIME <b id="hud-time">00:00</b></span>
-      <span class="hud-stat">BEST <b id="hud-best">--:--</b></span>
+      <span class="hud-stat">TIME <b id="hud-time">00:45</b></span>
     </div>
     <div class="hud-group">
       <button class="hud-btn" id="hud-intro">Intro</button>
-      <button class="hud-btn" id="hud-shuffle">Shuffle</button>
-      <button class="hud-btn" id="hud-size">4×4</button>
+      <button class="hud-btn" id="hud-hint">Hint</button>
+      <button class="hud-btn" id="hud-shuffle">Reset</button>
+      <button class="hud-btn" id="hud-next">Next Lvl</button>
       <button class="hud-btn" id="hud-theme">Vault</button>
-      <button class="hud-btn" id="hud-tilt">Tilt</button>
+      <button class="hud-btn" id="hud-lock">Unlocked</button>
       <button class="hud-btn" id="hud-mute">Sound: ON</button>
     </div>
   </div>
 
-  <div id="solved-toast">
-    <h3>CIPHER UNLOCKED</h3>
-    <p id="solved-detail">Solved in 0 moves</p>
+  <div id="result-toast">
+    <h3 id="result-title">HURRAY! CIPHER UNLOCKED</h3>
+    <p id="result-detail">Solved in 0 moves</p>
+    <button id="result-action">NEXT LEVEL</button>
   </div>
 
-  <div id="hint">Click tile or use Arrow/WASD keys • Right-drag to orbit • VR/MR: Poke, Pinch-Ray, or Pinch/Grip bezel to move</div>
+  <div id="hint-bar">Click tile or Arrow/WASD • Right-drag to orbit • VR/MR: Poke, Pinch-Ray, or Grip/Pinch bezel (when unlocked)</div>
 
   <script type="importmap">
     {
@@ -311,7 +357,19 @@
     import * as THREE from 'three';
 
     // =========================================================================
-    // 1. SYNTHESIZED WEB AUDIO (Theme-aware mechanical & wood sounds)
+    // 1. CHALLENGE LEVEL DEFINITIONS (Realistic Time Limits)
+    // =========================================================================
+    const CHALLENGE_LEVELS = [
+      { id: 1, name: 'Warm-Up Vault',    size: 3, timeLimit: 45,  shuffleSteps: 35 },
+      { id: 2, name: 'Speed Lock',       size: 3, timeLimit: 25,  shuffleSteps: 55 },
+      { id: 3, name: 'Classic 15-Cipher',size: 4, timeLimit: 150, shuffleSteps: 90 },
+      { id: 4, name: 'Master 15-Cipher', size: 4, timeLimit: 105, shuffleSteps: 130 },
+      { id: 5, name: 'Heavy Vault',      size: 5, timeLimit: 270, shuffleSteps: 170 },
+      { id: 6, name: 'Grandmaster Core', size: 6, timeLimit: 420, shuffleSteps: 220 }
+    ];
+
+    // =========================================================================
+    // 2. SYNTHESIZED WEB AUDIO + "HURRAY!" CELEBRATION
     // =========================================================================
     let audioCtx = null;
     let muted = false;
@@ -344,42 +402,83 @@
       initAudio();
       const mult = Math.min(1.4, 0.9 + count * 0.15);
       if (theme === 'vault') {
-        // Metallic rail glide + crisp detent click
         playTone(220, 0.07, 'triangle', 0.08 * mult, 140);
         playTone(1250 + Math.random() * 220, 0.045, 'square', 0.055, 620, 0.055);
       } else {
-        // Warm hollow mahogany clack
         playTone(310 + Math.random() * 40, 0.055, 'sine', 0.14 * mult, 150);
         playTone(540 + Math.random() * 60, 0.035, 'triangle', 0.09, 260, 0.045);
       }
     }
 
     function playButtonSound(theme) {
-      if (theme === 'vault') {
-        playTone(880, 0.04, 'square', 0.06, 420);
-      } else {
-        playTone(460, 0.05, 'triangle', 0.1, 280);
-      }
+      if (theme === 'vault') playTone(880, 0.04, 'square', 0.06, 420);
+      else playTone(460, 0.05, 'triangle', 0.1, 280);
     }
 
     function playBootSound() {
       if (muted) return;
       initAudio();
-      // Low servo hum + 3 mechanical tumbler clicks
       playTone(68, 0.65, 'sawtooth', 0.05, 118);
-      [0.12, 0.26, 0.42].forEach((d, i) => {
-        playTone(720 + i * 190, 0.04, 'square', 0.05, 340, d);
-      });
+      [0.12, 0.26, 0.42].forEach((d, i) => playTone(720 + i * 190, 0.04, 'square', 0.05, 340, d));
     }
 
-    function playSolveChime() {
-      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
-        playTone(f, 0.35, 'triangle', 0.12, null, i * 0.09);
+    function playTickSound() {
+      playTone(980, 0.035, 'sine', 0.07, 640);
+    }
+
+    function playFailSound() {
+      playTone(240, 0.25, 'sawtooth', 0.12, 160, 0);
+      playTone(150, 0.45, 'sawtooth', 0.14, 90, 0.22);
+    }
+
+    function playHurrayCelebration() {
+      if (muted) return;
+      initAudio();
+      // 1. Confetti pop + vault unlatch clunk
+      playTone(160, 0.16, 'triangle', 0.22, 48, 0);
+      // 2. Triumphant brass/chime fanfare
+      const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+      notes.forEach((f, i) => {
+        playTone(f, 0.42, 'triangle', 0.13, null, i * 0.075);
+        playTone(f * 0.5, 0.45, 'sawtooth', 0.04, null, i * 0.075);
       });
+      // 3. Filtered celebratory crowd/confetti shimmer swell
+      const bufSize = audioCtx.sampleRate * 0.9;
+      const buf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < bufSize; i++) {
+        const env = Math.sin((i / bufSize) * Math.PI);
+        data[i] = (Math.random() * 2 - 1) * env * 0.35;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buf;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1100, audioCtx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(2200, audioCtx.currentTime + 0.6);
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.9);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start();
+
+      // 4. Upbeat spoken "Hurray!" via Web Speech API (if supported)
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance('Hurray!');
+          utter.rate = 1.15;
+          utter.pitch = 1.3;
+          utter.volume = 0.9;
+          window.speechSynthesis.speak(utter);
+        } catch (e) {}
+      }
     }
 
     // =========================================================================
-    // 2. THREE.JS SCENE, LIGHTING & STUDIO ENVIRONMENT
+    // 3. THREE.JS SCENE & LIGHTING
     // =========================================================================
     const scene = new THREE.Scene();
     const bgVault = new THREE.Color(0x07090d);
@@ -388,7 +487,7 @@
     scene.fog = new THREE.FogExp2(0x07090d, 0.09);
 
     const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.03, 40);
-    camera.position.set(0, 1.38, 0.86);
+    camera.position.set(0, 1.38, 0.88);
     camera.lookAt(0, 1.25, 0);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -401,10 +500,7 @@
     renderer.xr.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    // Lighting
-    const hemiLight = new THREE.HemisphereLight(0xdbeafe, 0x1e293b, 0.9);
-    scene.add(hemiLight);
-
+    scene.add(new THREE.HemisphereLight(0xdbeafe, 0x1e293b, 0.92));
     const keyLight = new THREE.DirectionalLight(0xfff5e4, 1.75);
     keyLight.position.set(1.6, 2.8, 2.2);
     keyLight.castShadow = true;
@@ -419,7 +515,7 @@
     brassLight.position.set(1.2, 0.9, 1.2);
     scene.add(brassLight);
 
-    // Subtle Studio Backdrop (Auto-hidden in Mixed Reality)
+    // Studio Backdrop (Auto-hidden in Mixed Reality)
     const envGroup = new THREE.Group();
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(18, 18),
@@ -428,14 +524,13 @@
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     envGroup.add(floor);
-
     const grid = new THREE.GridHelper(18, 36, 0x334155, 0x141923);
     grid.position.y = 0.003;
     envGroup.add(grid);
     scene.add(envGroup);
 
     // =========================================================================
-    // 3. PROCEDURAL TEXTURES (Mahogany Wood Grain, Brushed Metal, Tiles, Bezel)
+    // 4. PROCEDURAL TEXTURES
     // =========================================================================
     function createWoodTexture() {
       const c = document.createElement('canvas');
@@ -476,7 +571,7 @@
     const woodTex = createWoodTexture();
     const metalTex = createBrushedMetalTexture();
 
-    function createTileFaceTexture(num, theme, gridSize) {
+    function createTileFaceTexture(num, theme, size) {
       const c = document.createElement('canvas');
       c.width = 256; c.height = 256;
       const ctx = c.getContext('2d');
@@ -488,13 +583,11 @@
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 256, 256);
 
-        // Recessed inner border
         ctx.strokeStyle = 'rgba(212, 168, 83, 0.35)';
         ctx.lineWidth = 6;
         ctx.strokeRect(16, 16, 224, 224);
 
-        // Engraved brushed brass numeral
-        const fontSize = gridSize >= 6 ? 112 : gridSize === 5 ? 124 : 138;
+        const fontSize = size >= 6 ? 112 : size === 5 ? 124 : 138;
         ctx.font = `800 ${fontSize}px "Segoe UI", system-ui, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -508,7 +601,6 @@
         ctx.fillStyle = numGrad;
         ctx.fillText(String(num), 128, 132);
       } else {
-        // Warm Ivory tile
         const grad = ctx.createLinearGradient(0, 0, 256, 256);
         grad.addColorStop(0, '#fbf5e6');
         grad.addColorStop(1, '#e8dcc0');
@@ -519,17 +611,41 @@
         ctx.lineWidth = 5;
         ctx.strokeRect(16, 16, 224, 224);
 
-        const fontSize = gridSize >= 6 ? 114 : gridSize === 5 ? 126 : 142;
+        const fontSize = size >= 6 ? 114 : size === 5 ? 126 : 142;
         ctx.font = `700 ${fontSize}px Georgia, "Times New Roman", serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillStyle = '#2d180e';
         ctx.fillText(String(num), 128, 134);
       }
-
       const tex = new THREE.CanvasTexture(c);
       tex.anisotropy = 4;
       return tex;
+    }
+
+    function createZeeMedallionTexture() {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      const g = ctx.createRadialGradient(128, 128, 12, 128, 128, 124);
+      g.addColorStop(0, '#fff4cc');
+      g.addColorStop(0.55, '#d4a853');
+      g.addColorStop(1, '#7a5519');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(128, 128, 122, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#fef3c7';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+      ctx.fillStyle = '#14171f';
+      ctx.font = '900 48px "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('ZEE', 128, 106);
+      ctx.font = '800 24px "Segoe UI", sans-serif';
+      ctx.fillText('UNLOCKED', 128, 152);
+      return new THREE.CanvasTexture(c);
     }
 
     function makeRoundedRectShape(w, h, r) {
@@ -548,7 +664,48 @@
     }
 
     // =========================================================================
-    // 4. PUZZLE STATE & 3D ARTIFACT RIG
+    // 5. 3D CONFETTI EXPLOSION SYSTEM
+    // =========================================================================
+    const confettiPieces = [];
+    const confettiGeo = new THREE.PlaneGeometry(0.018, 0.011);
+    const confettiColors = [0xfef08a, 0x38bdf8, 0xf43f5e, 0x4ade80, 0xf97316, 0xc084fc, 0xffffff, 0xd4a853];
+
+    function spawnConfettiBurst(originWorld) {
+      for (let i = 0; i < 150; i++) {
+        const mat = new THREE.MeshBasicMaterial({
+          color: confettiColors[i % confettiColors.length],
+          side: THREE.DoubleSide
+        });
+        const mesh = new THREE.Mesh(confettiGeo, mat);
+        mesh.position.copy(originWorld);
+        mesh.position.x += (Math.random() - 0.5) * 0.22;
+        mesh.position.y += (Math.random() - 0.5) * 0.22;
+        mesh.position.z += 0.05;
+        mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+        scene.add(mesh);
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.65 + Math.random() * 1.8;
+        confettiPieces.push({
+          mesh,
+          vel: new THREE.Vector3(
+            Math.cos(angle) * speed * 0.85,
+            0.9 + Math.random() * 1.9,
+            (Math.random() - 0.3) * speed * 0.9
+          ),
+          rotVel: new THREE.Vector3(
+            (Math.random() - 0.5) * 14,
+            (Math.random() - 0.5) * 14,
+            (Math.random() - 0.5) * 14
+          ),
+          flutterPhase: Math.random() * Math.PI * 2,
+          life: 2.8 + Math.random() * 1.6
+        });
+      }
+    }
+
+    // =========================================================================
+    // 6. PUZZLE STATE & 3D ARTIFACT RIG
     // =========================================================================
     const BOARD_INNER = 0.40;
     const FRAME_W = 0.50;
@@ -562,18 +719,27 @@
     ];
 
     let appState = 'intro'; // 'intro' | 'booting' | 'playing'
+    let gameMode = 'challenge'; // 'challenge' | 'free'
+    let levelIdx = 0;
     let currentTheme = 'vault';
-    let gridSize = 4;
+    let gridSize = CHALLENGE_LEVELS[0].size;
     let tiltIdx = 0;
+    let boardLocked = false;
+
     let moves = 0;
-    let timerSec = 0;
+    let timerSec = CHALLENGE_LEVELS[0].timeLimit;
     let timerRunning = false;
     let isSolved = false;
+    let isFailed = false;
+    let vaultUnlatchProg = 0;
 
-    let board = [];       // 1D array of length N*N, 0 = empty
-    let tileMeshes = {};  // value -> { group, pipMat, currentPos, targetPos }
+    let board = [];
+    let solutionStack = []; // Tracks exact path back to solved state for instant Smart Hint
+    let tileMeshes = {};
     let interactiveTiles = [];
     let sideButtons = [];
+    let cornerBolts = [];
+    let zeeMedallion = null;
 
     const boardRig = new THREE.Group();
     boardRig.position.set(0, 1.24, -0.05);
@@ -589,30 +755,27 @@
     bezelCanvas.width = 768; bezelCanvas.height = 128;
     const bezelCtx = bezelCanvas.getContext('2d');
     const bezelTex = new THREE.CanvasTexture(bezelCanvas);
-    let bezelMesh = null;
 
     function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
+      const clamped = Math.max(0, Math.ceil(sec));
+      const m = Math.floor(clamped / 60);
+      const s = clamped % 60;
       return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
-    function getBestKey() { return `vault_cipher_best_${gridSize}`; }
-    function getBestTime() {
-      const v = localStorage.getItem(getBestKey());
-      return v ? parseFloat(v) : null;
-    }
-
     function updateDisplays(customStatus = null) {
-      const best = getBestTime();
       const timeStr = formatTime(timerSec);
-      const bestStr = best !== null ? formatTime(best) : '--:--';
+      const lowTime = gameMode === 'challenge' && timerSec <= 15 && !isSolved;
 
+      document.getElementById('hud-mode-label').innerHTML =
+        gameMode === 'challenge' ? `LVL <b>${levelIdx + 1}</b>` : `FREE <b>${gridSize}×${gridSize}</b>`;
       document.getElementById('hud-moves').textContent = moves;
-      document.getElementById('hud-time').textContent = timeStr;
-      document.getElementById('hud-best').textContent = bestStr;
-      document.getElementById('hud-size').textContent = `${gridSize}×${gridSize}`;
+      const tEl = document.getElementById('hud-time');
+      tEl.textContent = timeStr;
+      tEl.classList.toggle('danger', lowTime);
       document.getElementById('hud-theme').textContent = currentTheme === 'vault' ? 'Vault' : 'Wood';
+      document.getElementById('hud-lock').textContent = boardLocked ? 'Locked' : 'Unlocked';
+      document.getElementById('hud-lock').classList.toggle('active', boardLocked);
 
       // Draw 3D Bezel Readout
       const ctx = bezelCtx;
@@ -620,20 +783,21 @@
       ctx.fillStyle = currentTheme === 'vault' ? '#090c11' : '#1b0f09';
       ctx.fillRect(0, 0, 768, 128);
 
-      ctx.strokeStyle = currentTheme === 'vault' ? '#d4a853' : '#c89d4e';
+      ctx.strokeStyle = lowTime ? '#ef4444' : (isSolved ? '#22c55e' : '#d4a853');
       ctx.lineWidth = 6;
       ctx.strokeRect(4, 4, 760, 120);
 
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       if (customStatus) {
-        ctx.fillStyle = '#4ade80';
-        ctx.font = '800 42px "Segoe UI", sans-serif';
+        ctx.fillStyle = isFailed ? '#f87171' : '#4ade80';
+        ctx.font = '800 40px "Segoe UI", sans-serif';
         ctx.fillText(customStatus, 384, 66);
       } else {
-        ctx.fillStyle = currentTheme === 'vault' ? '#f5d790' : '#f7e5bc';
+        ctx.fillStyle = lowTime ? '#f87171' : (currentTheme === 'vault' ? '#f5d790' : '#f7e5bc');
         ctx.font = '700 34px "Segoe UI", monospace';
-        ctx.fillText(`MOVES: ${String(moves).padStart(3, '0')}   •   TIME: ${timeStr}   •   BEST: ${bestStr}`, 384, 66);
+        const tag = gameMode === 'challenge' ? `LVL ${levelIdx + 1}` : `${gridSize}×${gridSize}`;
+        ctx.fillText(`${tag}   •   MOVES: ${String(moves).padStart(3, '0')}   •   TIME: ${timeStr}`, 384, 66);
       }
       bezelTex.needsUpdate = true;
     }
@@ -642,6 +806,7 @@
       frameGroup.clear();
       sideBtnGroup.clear();
       sideButtons = [];
+      cornerBolts = [];
 
       const isVault = currentTheme === 'vault';
       const housingMat = new THREE.MeshStandardMaterial({
@@ -661,7 +826,6 @@
         metalness: isVault ? 0.3 : 0.05
       });
 
-      // Outer beveled chassis
       const chassisShape = makeRoundedRectShape(FRAME_W, FRAME_H, 0.026);
       const chassisGeo = new THREE.ExtrudeGeometry(chassisShape, {
         depth: FRAME_D,
@@ -674,10 +838,8 @@
       const chassis = new THREE.Mesh(chassisGeo, housingMat);
       chassis.castShadow = true;
       chassis.receiveShadow = true;
-      chassis.userData.isBezel = true;
       frameGroup.add(chassis);
 
-      // Recessed dark well behind tiles
       const well = new THREE.Mesh(
         new THREE.BoxGeometry(BOARD_INNER + 0.012, BOARD_INNER + 0.012, 0.01),
         wellMat
@@ -686,7 +848,6 @@
       well.receiveShadow = true;
       frameGroup.add(well);
 
-      // Brass inner trim around tile well
       const trimSize = BOARD_INNER + 0.022;
       const trimBar = 0.007;
       [
@@ -700,73 +861,88 @@
         frameGroup.add(m);
       });
 
-      // Corner Details: Hex Bolts (Vault) or Brass Corner Plates (Wood)
+      // 4 Corner Bolts (spin out on Vault Unlatch Finale!)
       const cx = FRAME_W / 2 - 0.028;
       const cy = FRAME_H / 2 - 0.028;
       [[-cx, cy], [cx, cy], [-cx, -cy], [cx, -cy]].forEach(([x, y]) => {
-        if (isVault) {
-          const bolt = new THREE.Mesh(
-            new THREE.CylinderGeometry(0.013, 0.013, 0.01, 6),
-            new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.3, metalness: 0.85 })
-          );
-          bolt.rotation.x = Math.PI / 2;
-          bolt.position.set(x, y, FRAME_D / 2 + 0.009);
-          frameGroup.add(bolt);
-        } else {
-          const stud = new THREE.Mesh(new THREE.SphereGeometry(0.009, 12, 12), trimMat);
-          stud.scale.set(1, 1, 0.5);
-          stud.position.set(x, y, FRAME_D / 2 + 0.009);
-          frameGroup.add(stud);
-        }
+        const bolt = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.013, 0.013, 0.014, 6),
+          isVault
+            ? new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.28, metalness: 0.88 })
+            : trimMat
+        );
+        bolt.rotation.x = Math.PI / 2;
+        bolt.position.set(x, y, FRAME_D / 2 + 0.009);
+        frameGroup.add(bolt);
+        cornerBolts.push({ mesh: bolt, baseZ: FRAME_D / 2 + 0.009 });
       });
 
+      // Glowing Brass ZEE GAMES Victory Medallion (rises from top on win)
+      zeeMedallion = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.052, 0.052, 0.012, 24),
+        [
+          trimMat,
+          new THREE.MeshBasicMaterial({ map: createZeeMedallionTexture() }),
+          trimMat
+        ]
+      );
+      zeeMedallion.rotation.x = Math.PI / 2;
+      zeeMedallion.position.set(0, FRAME_H / 2 - 0.06, 0);
+      zeeMedallion.visible = false;
+      frameGroup.add(zeeMedallion);
+
       // Diegetic 3D Bezel Display at Top
-      bezelMesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(0.35, 0.052),
+      const bezelMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(0.36, 0.052),
         new THREE.MeshBasicMaterial({ map: bezelTex })
       );
       bezelMesh.position.set(0, FRAME_H / 2 - 0.044, FRAME_D / 2 + 0.011);
       frameGroup.add(bezelMesh);
 
-      // 4 Physical Spring-Loaded Side Buttons on Right Edge
-      const btnDefs = [
-        { label: 'SHUFFLE', action: () => startNewShuffle(true) },
-        { label: 'SIZE',    action: () => cycleGridSize() },
-        { label: 'THEME',   action: () => toggleTheme() },
-        { label: 'TILT',    action: () => cycleTilt() }
+      // Balanced Physical Side Buttons: 3 Right (SHUFFLE, HINT, NEXT), 3 Left (THEME, TILT, LOCK)
+      const rightDefs = [
+        { label: 'RESET', action: () => startRound(true) },
+        { label: 'HINT',  action: () => triggerSmartHint() },
+        { label: 'NEXT',  action: () => nextLevelOrSize() }
       ];
-      btnDefs.forEach((def, idx) => {
-        const y = 0.12 - idx * 0.095;
-        const g = new THREE.Group();
-        g.position.set(FRAME_W / 2 + 0.014, y, 0.006);
+      const leftDefs = [
+        { label: 'THEME', action: () => toggleTheme() },
+        { label: 'TILT',  action: () => cycleTilt() },
+        { label: 'LOCK',  action: () => toggleBoardLock() }
+      ];
 
-        const cap = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.016, 0.018, 0.022, 16),
-          trimMat
-        );
-        cap.rotation.z = -Math.PI / 2;
-        cap.userData.sideBtnIdx = idx;
+      function addSideBtn(def, side, rowIdx) {
+        const y = 0.09 - rowIdx * 0.11;
+        const g = new THREE.Group();
+        g.position.set(side * (FRAME_W / 2 + 0.014), y, 0.006);
+
+        const cap = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.018, 0.022, 16), trimMat);
+        cap.rotation.z = -side * (Math.PI / 2);
+        const btnIndex = sideButtons.length;
+        cap.userData.sideBtnIdx = btnIndex;
         g.add(cap);
 
-        // Mini label beside button
         const lc = document.createElement('canvas');
         lc.width = 160; lc.height = 48;
         const lctx = lc.getContext('2d');
         lctx.fillStyle = isVault ? '#d4a853' : '#f3d89c';
         lctx.font = '800 24px "Segoe UI", sans-serif';
-        lctx.textAlign = 'left';
+        lctx.textAlign = side > 0 ? 'left' : 'right';
         lctx.textBaseline = 'middle';
-        lctx.fillText(def.label, 6, 24);
+        lctx.fillText(def.label, side > 0 ? 6 : 154, 24);
         const lMesh = new THREE.Mesh(
           new THREE.PlaneGeometry(0.068, 0.02),
           new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(lc), transparent: true })
         );
-        lMesh.position.set(0.045, 0, 0.012);
+        lMesh.position.set(side * 0.046, 0, 0.012);
         g.add(lMesh);
 
         sideBtnGroup.add(g);
-        sideButtons.push({ group: g, cap, action: def.action, pressAnim: 0, cooldown: 0 });
-      });
+        sideButtons.push({ group: g, cap, side, action: def.action, pressAnim: 0, cooldown: 0 });
+      }
+
+      rightDefs.forEach((d, i) => addSideBtn(d, 1, i));
+      leftDefs.forEach((d, i) => addSideBtn(d, -1, i));
     }
 
     function cellToLocalPos(index) {
@@ -788,6 +964,7 @@
         board = [];
         for (let i = 1; i < total; i++) board.push(i);
         board.push(0);
+        solutionStack = [];
       }
 
       const cell = BOARD_INNER / gridSize;
@@ -837,7 +1014,6 @@
         face.userData.tileValue = val;
         g.add(face);
 
-        // Recessed home-position LED pip in top-right corner of tile
         const pipMat = new THREE.MeshBasicMaterial({ color: 0x334155 });
         const pip = new THREE.Mesh(pipGeo, pipMat);
         pip.position.set(tileSize * 0.33, tileSize * 0.33, tileDepth / 2 + bevel + 0.0012);
@@ -847,12 +1023,7 @@
         g.position.copy(pos);
         tilesGroup.add(g);
 
-        tileMeshes[val] = {
-          group: g,
-          pipMat,
-          targetPos: pos.clone(),
-          sweepGlow: 0
-        };
+        tileMeshes[val] = { group: g, pipMat, faceMat, targetPos: pos.clone(), sweepGlow: 0, hintGlow: 0 };
         interactiveTiles.push(body, face);
       }
 
@@ -868,25 +1039,46 @@
         const tm = tileMeshes[val];
         if (!tm) continue;
         const inHome = (val === i + 1);
-        tm.inHome = inHome;
-        if (tm.sweepGlow <= 0) {
+        if (tm.sweepGlow <= 0 && tm.hintGlow <= 0) {
           tm.pipMat.color.setHex(inHome ? 0x22c55e : (currentTheme === 'vault' ? 0x5c4318 : 0x8b6b4a));
         }
       }
     }
 
     // =========================================================================
-    // 5. GUARANTEED-SOLVABLE SHUFFLE & MULTI-TILE SLIDING
+    // 7. GUARANTEED-SOLVABLE SHUFFLE, SMART HINT & SLIDING
     // =========================================================================
-    function startNewShuffle(withSound = false) {
+    function recordStackMove(val) {
+      if (solutionStack.length > 0 && solutionStack[solutionStack.length - 1] === val) {
+        solutionStack.pop();
+      } else {
+        solutionStack.push(val);
+      }
+    }
+
+    function startRound(withSound = false) {
+      if (gameMode === 'challenge') {
+        const lvl = CHALLENGE_LEVELS[levelIdx];
+        if (gridSize !== lvl.size) {
+          gridSize = lvl.size;
+          buildTiles(false);
+        }
+        timerSec = lvl.timeLimit;
+      } else {
+        timerSec = 0;
+      }
+
       const total = gridSize * gridSize;
       board = [];
       for (let i = 1; i < total; i++) board.push(i);
       board.push(0);
+      solutionStack = [];
 
       let emptyIdx = total - 1;
       let prevIdx = -1;
-      const steps = gridSize * gridSize * 14;
+      const steps = gameMode === 'challenge'
+        ? CHALLENGE_LEVELS[levelIdx].shuffleSteps
+        : gridSize * gridSize * 12;
 
       for (let s = 0; s < steps; s++) {
         const r = Math.floor(emptyIdx / gridSize);
@@ -899,22 +1091,27 @@
 
         const valid = neighbors.filter(n => n !== prevIdx);
         const pick = valid[Math.floor(Math.random() * valid.length)];
-        board[emptyIdx] = board[pick];
+        const movedVal = board[pick];
+        board[emptyIdx] = movedVal;
         board[pick] = 0;
+        recordStackMove(movedVal);
         prevIdx = emptyIdx;
         emptyIdx = pick;
       }
 
       moves = 0;
-      timerSec = 0;
       timerRunning = false;
       isSolved = false;
-      document.getElementById('solved-toast').classList.remove('show');
+      isFailed = false;
+      vaultUnlatchProg = 0;
+      if (zeeMedallion) zeeMedallion.visible = false;
+      document.getElementById('result-toast').classList.remove('show', 'fail');
 
       for (let i = 0; i < total; i++) {
         const val = board[i];
         if (val !== 0 && tileMeshes[val]) {
           tileMeshes[val].targetPos.copy(cellToLocalPos(i));
+          tileMeshes[val].hintGlow = 0;
         }
       }
       refreshPipStates();
@@ -922,8 +1119,18 @@
       if (withSound) playSlideSound(currentTheme, 2);
     }
 
+    function triggerSmartHint() {
+      if (appState !== 'playing' || isSolved || isFailed || solutionStack.length === 0) return;
+      playButtonSound(currentTheme);
+      const hintVal = solutionStack[solutionStack.length - 1];
+      const tm = tileMeshes[hintVal];
+      if (tm) {
+        tm.hintGlow = 2.2;
+      }
+    }
+
     function trySlideTile(val, isDemo = false) {
-      if (!isDemo && (appState !== 'playing' || isSolved)) return false;
+      if (!isDemo && (appState !== 'playing' || isSolved || isFailed)) return false;
       const tileIdx = board.indexOf(val);
       const emptyIdx = board.indexOf(0);
       if (tileIdx === -1 || emptyIdx === -1) return false;
@@ -932,7 +1139,6 @@
       const er = Math.floor(emptyIdx / gridSize), ec = emptyIdx % gridSize;
       if (tr !== er && tc !== ec) return false;
 
-      // Multi-tile line slide toward empty slot
       const dr = Math.sign(tr - er);
       const dc = Math.sign(tc - ec);
       let curR = er, curC = ec;
@@ -943,10 +1149,12 @@
         const nextC = curC + dc;
         const curIdx = curR * gridSize + curC;
         const nextIdx = nextR * gridSize + nextC;
-        board[curIdx] = board[nextIdx];
-        const movedVal = board[curIdx];
+        const movedVal = board[nextIdx];
+        board[curIdx] = movedVal;
+        if (!isDemo) recordStackMove(movedVal);
         if (tileMeshes[movedVal]) {
           tileMeshes[movedVal].targetPos.copy(cellToLocalPos(curIdx));
+          tileMeshes[movedVal].hintGlow = 0;
         }
         curR = nextR;
         curC = nextC;
@@ -960,7 +1168,7 @@
         playSlideSound(currentTheme, slidCount);
         refreshPipStates();
         checkSolved();
-        updateDisplays(isSolved ? 'CIPHER UNLOCKED' : null);
+        updateDisplays(isSolved ? 'HURRAY! UNLOCKED!' : null);
       }
       return true;
     }
@@ -972,23 +1180,54 @@
       }
       isSolved = true;
       timerRunning = false;
-      playSolveChime();
+      playHurrayCelebration();
 
-      const prevBest = getBestTime();
-      if (prevBest === null || timerSec < prevBest) {
-        localStorage.setItem(getBestKey(), String(timerSec));
-      }
-      // Celebrate with LED sweep
+      // 3D Confetti Explosion from center of the board!
+      const worldCenter = new THREE.Vector3();
+      boardRig.getWorldPosition(worldCenter);
+      spawnConfettiBurst(worldCenter);
+      setTimeout(() => spawnConfettiBurst(worldCenter), 350);
+
+      // Vault Unlatch Finale
+      if (zeeMedallion) zeeMedallion.visible = true;
       Object.values(tileMeshes).forEach((tm, idx) => {
-        setTimeout(() => { tm.sweepGlow = 0.55; }, idx * 25);
+        setTimeout(() => { tm.sweepGlow = 0.65; }, idx * 25);
       });
 
-      document.getElementById('solved-detail').textContent = `Solved ${gridSize}×${gridSize} in ${moves} moves (${formatTime(timerSec)})`;
-      document.getElementById('solved-toast').classList.add('show');
+      const toast = document.getElementById('result-toast');
+      toast.classList.remove('fail');
+      document.getElementById('result-title').textContent = 'HURRAY! CIPHER UNLOCKED';
+      if (gameMode === 'challenge') {
+        const lvl = CHALLENGE_LEVELS[levelIdx];
+        const used = Math.max(1, Math.round(lvl.timeLimit - timerSec));
+        document.getElementById('result-detail').textContent =
+          `Level ${lvl.id} (${lvl.name}) cleared in ${moves} moves (${formatTime(used)})!`;
+        document.getElementById('result-action').textContent =
+          levelIdx < CHALLENGE_LEVELS.length - 1 ? `PLAY LEVEL ${levelIdx + 2}` : 'REPLAY LEVEL 1';
+      } else {
+        document.getElementById('result-detail').textContent =
+          `Solved ${gridSize}×${gridSize} in ${moves} moves (${formatTime(timerSec)})!`;
+        document.getElementById('result-action').textContent = 'PLAY AGAIN';
+      }
+      toast.classList.add('show');
+    }
+
+    function triggerTimeExpired() {
+      isFailed = true;
+      timerRunning = false;
+      timerSec = 0;
+      playFailSound();
+      updateDisplays('TIME EXPIRED');
+
+      const toast = document.getElementById('result-toast');
+      toast.classList.add('fail', 'show');
+      document.getElementById('result-title').textContent = 'TIME EXPIRED';
+      document.getElementById('result-detail').textContent = `Level ${levelIdx + 1} vault relocked. Give it another shot!`;
+      document.getElementById('result-action').textContent = 'RETRY LEVEL';
     }
 
     // =========================================================================
-    // 6. THEME, SIZE, TILT & BOOT-UP SEQUENCE
+    // 8. THEME, MODE, LOCK & BOOT-UP SEQUENCE
     // =========================================================================
     function applyTheme(theme) {
       currentTheme = theme;
@@ -1007,17 +1246,32 @@
       applyTheme(currentTheme === 'vault' ? 'wood' : 'vault');
     }
 
-    function setGridSize(n) {
-      gridSize = n;
-      document.querySelectorAll('[data-size]').forEach(b => b.classList.toggle('active', Number(b.dataset.size) === n));
+    function selectChallengeLevel(idx) {
+      levelIdx = idx % CHALLENGE_LEVELS.length;
+      const lvl = CHALLENGE_LEVELS[levelIdx];
+      document.querySelectorAll('[data-level]').forEach(b => b.classList.toggle('active', Number(b.dataset.level) === levelIdx));
+      document.getElementById('level-desc').innerHTML =
+        `Level ${lvl.id}: <b>${lvl.size}×${lvl.size} ${lvl.name}</b> — Solve in <b>${formatTime(lvl.timeLimit)}</b>`;
+      gridSize = lvl.size;
       buildTiles(false);
-      if (appState === 'playing') startNewShuffle(true);
     }
 
-    function cycleGridSize() {
+    function nextLevelOrSize() {
       playButtonSound(currentTheme);
-      const next = gridSize >= 6 ? 3 : gridSize + 1;
-      setGridSize(next);
+      if (gameMode === 'challenge') {
+        selectChallengeLevel(levelIdx + 1);
+      } else {
+        gridSize = gridSize >= 6 ? 3 : gridSize + 1;
+        document.querySelectorAll('[data-size]').forEach(b => b.classList.toggle('active', Number(b.dataset.size) === gridSize));
+        buildTiles(false);
+      }
+      startRound(true);
+    }
+
+    function toggleBoardLock() {
+      playButtonSound(currentTheme);
+      boardLocked = !boardLocked;
+      updateDisplays();
     }
 
     function cycleTilt() {
@@ -1030,38 +1284,34 @@
       playBootSound();
       document.getElementById('intro-overlay').classList.add('hidden');
       appState = 'booting';
-
       if (xrMode) startXR(xrMode);
 
-      // LED diagnostic sweep across all tiles
       const vals = Object.keys(tileMeshes).map(Number).sort((a, b) => a - b);
       vals.forEach((v, idx) => {
-        setTimeout(() => {
-          if (tileMeshes[v]) tileMeshes[v].sweepGlow = 0.4;
-        }, idx * 28);
+        setTimeout(() => { if (tileMeshes[v]) tileMeshes[v].sweepGlow = 0.4; }, idx * 26);
       });
 
       setTimeout(() => {
         appState = 'playing';
-        startNewShuffle(true);
+        startRound(true);
         if (!renderer.xr.isPresenting) {
           document.getElementById('hud').classList.add('visible');
-          document.getElementById('hint').classList.add('visible');
+          document.getElementById('hint-bar').classList.add('visible');
         }
-      }, 720);
+      }, 700);
     }
 
     function returnToIntro() {
       appState = 'intro';
       timerRunning = false;
       document.getElementById('hud').classList.remove('visible');
-      document.getElementById('hint').classList.remove('visible');
-      document.getElementById('solved-toast').classList.remove('show');
+      document.getElementById('hint-bar').classList.remove('visible');
+      document.getElementById('result-toast').classList.remove('show', 'fail');
       document.getElementById('intro-overlay').classList.remove('hidden');
     }
 
     // =========================================================================
-    // 7. DESKTOP / MOBILE CONTROLS (Click, Right-Drag Orbit, Arrow/WASD)
+    // 9. DESKTOP / MOBILE CONTROLS
     // =========================================================================
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -1087,8 +1337,7 @@
         trySlideTile(tileHits[0].object.userData.tileValue);
         return;
       }
-      const btnCaps = sideButtons.map(b => b.cap);
-      const btnHits = raycaster.intersectObjects(btnCaps, false);
+      const btnHits = raycaster.intersectObjects(sideButtons.map(b => b.cap), false);
       if (btnHits.length > 0) {
         const b = sideButtons[btnHits[0].object.userData.sideBtnIdx];
         b.pressAnim = 1.0;
@@ -1105,7 +1354,7 @@
     window.addEventListener('pointerup', () => { isOrbiting = false; });
 
     window.addEventListener('keydown', (e) => {
-      if (appState !== 'playing' || isSolved) return;
+      if (appState !== 'playing' || isSolved || isFailed) return;
       const emptyIdx = board.indexOf(0);
       const er = Math.floor(emptyIdx / gridSize), ec = emptyIdx % gridSize;
       let tr = er, tc = ec;
@@ -1120,18 +1369,16 @@
     });
 
     // =========================================================================
-    // 8. WEBXR: QUEST 3 MIXED REALITY + CONTROLLERS + NATIVE HAND TRACKING
+    // 10. WEBXR: QUEST 3 MIXED REALITY + CONTROLLERS + HAND TRACKING
     // =========================================================================
     function pulseHaptic(source, strength = 0.5, ms = 35) {
       const gp = source && source.gamepad;
-      if (gp && gp.hapticActuators && gp.hapticActuators[0]) {
-        gp.hapticActuators[0].pulse(strength, ms);
-      }
+      if (gp && gp.hapticActuators && gp.hapticActuators[0]) gp.hapticActuators[0].pulse(strength, ms);
     }
 
-    // Grab / Reposition State (shared by controller grip & hand pinch)
     let grabState = { active: false, grabber: null, offsetMatrix: new THREE.Matrix4() };
     function beginGrab(grabberObj) {
+      if (boardLocked) return;
       grabState.active = true;
       grabState.grabber = grabberObj;
       const invGrab = new THREE.Matrix4().copy(grabberObj.matrixWorld).invert();
@@ -1144,7 +1391,6 @@
       }
     }
 
-    // --- Touch Plus Controllers (Pointer Ray + Direct Poke Stylus + Grip Move) ---
     const xrRayMat = new THREE.LineBasicMaterial({ color: 0xd4a853, transparent: true, opacity: 0.55 });
     const xrControllers = [0, 1].map((i) => {
       const ctrl = renderer.xr.getController(i);
@@ -1156,16 +1402,12 @@
       stylus.position.z = -0.04;
       ctrl.add(stylus);
 
-      const tip = new THREE.Mesh(
-        new THREE.SphereGeometry(0.0055, 10, 10),
-        new THREE.MeshBasicMaterial({ color: 0x38bdf8 })
-      );
+      const tip = new THREE.Mesh(new THREE.SphereGeometry(0.0055, 10, 10), new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
       tip.position.z = -0.082;
       ctrl.add(tip);
 
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -2.5)]);
-      const rayLine = new THREE.Line(lineGeo, xrRayMat);
-      ctrl.add(rayLine);
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -2.5)]);
+      ctrl.add(new THREE.Line(lineGeo, xrRayMat));
       scene.add(ctrl);
 
       const state = { ctrl, tip, source: null, pokeCooldown: 0 };
@@ -1197,7 +1439,6 @@
       return state;
     });
 
-    // --- Native Quest 3 Hand Tracking (Articulated Joints, Index Poke, Pinch-Ray & Pinch-Drag) ---
     const jointGeo = new THREE.SphereGeometry(0.0075, 8, 8);
     const jointMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, transparent: true, opacity: 0.55, roughness: 0.3 });
     const tipRingGeo = new THREE.TorusGeometry(0.011, 0.002, 8, 16);
@@ -1205,8 +1446,6 @@
     const xrHands = [0, 1].map((i) => {
       const hand = renderer.xr.getHand(i);
       scene.add(hand);
-
-      const jointMeshes = {};
       const indexRing = new THREE.Mesh(tipRingGeo, new THREE.MeshBasicMaterial({ color: 0xd4a853 }));
       const thumbRing = new THREE.Mesh(tipRingGeo, new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
       indexRing.visible = thumbRing.visible = false;
@@ -1215,12 +1454,14 @@
       const pinchAnchor = new THREE.Object3D();
       scene.add(pinchAnchor);
 
-      const handRayGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -1.8)]);
-      const handRay = new THREE.Line(handRayGeo, new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4 }));
+      const handRay = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(0, 0, -1.8)]),
+        new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4 })
+      );
       handRay.visible = false;
       scene.add(handRay);
 
-      return { hand, jointMeshes, indexRing, thumbRing, pinchAnchor, handRay, pinching: false, pokeCooldown: 0 };
+      return { hand, jointMeshes: {}, indexRing, thumbRing, pinchAnchor, handRay, pinching: false, pokeCooldown: 0 };
     });
 
     const tmpVecA = new THREE.Vector3();
@@ -1232,7 +1473,6 @@
       tmpLocal.copy(worldPos);
       boardRig.worldToLocal(tmpLocal);
 
-      // Check tiles in board local space
       if (Math.abs(tmpLocal.z - (FRAME_D / 2 + 0.02)) < 0.032) {
         const cell = BOARD_INNER / gridSize;
         const c = Math.floor((tmpLocal.x + BOARD_INNER / 2) / cell);
@@ -1247,11 +1487,10 @@
         }
       }
 
-      // Check physical side buttons
       for (const b of sideButtons) {
         if (b.cooldown > 0) continue;
         b.cap.getWorldPosition(tmpVecB);
-        if (worldPos.distanceTo(tmpVecB) < 0.032) {
+        if (worldPos.distanceTo(tmpVecB) < 0.034) {
           b.cooldown = 0.55;
           b.pressAnim = 1.0;
           b.action();
@@ -1262,7 +1501,6 @@
       }
     }
 
-    // --- XR Session Launchers ---
     const btnMR = document.getElementById('btn-enter-mr');
     const btnVR = document.getElementById('btn-enter-vr');
 
@@ -1293,28 +1531,56 @@
         envGroup.visible = true;
         boardRig.position.set(0, 1.24, -0.05);
         document.getElementById('hud').classList.add('visible');
-        document.getElementById('hint').classList.add('visible');
+        document.getElementById('hint-bar').classList.add('visible');
       });
     }
 
     // =========================================================================
-    // 9. UI WIRING
+    // 11. UI WIRING
     // =========================================================================
     document.querySelectorAll('[data-theme]').forEach(btn => {
       btn.onclick = () => { initAudio(); playButtonSound(btn.dataset.theme); applyTheme(btn.dataset.theme); };
     });
-    document.querySelectorAll('[data-size]').forEach(btn => {
-      btn.onclick = () => { initAudio(); playButtonSound(currentTheme); setGridSize(Number(btn.dataset.size)); };
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+      btn.onclick = () => {
+        initAudio();
+        playButtonSound(currentTheme);
+        gameMode = btn.dataset.mode;
+        document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === gameMode));
+        document.getElementById('challenge-picker').style.display = gameMode === 'challenge' ? 'block' : 'none';
+        document.getElementById('free-picker').style.display = gameMode === 'free' ? 'block' : 'none';
+        if (gameMode === 'challenge') selectChallengeLevel(levelIdx);
+        else buildTiles(false);
+      };
     });
+    document.querySelectorAll('[data-level]').forEach(btn => {
+      btn.onclick = () => { initAudio(); playButtonSound(currentTheme); selectChallengeLevel(Number(btn.dataset.level)); };
+    });
+    document.querySelectorAll('[data-size]').forEach(btn => {
+      btn.onclick = () => {
+        initAudio();
+        playButtonSound(currentTheme);
+        gridSize = Number(btn.dataset.size);
+        document.querySelectorAll('[data-size]').forEach(b => b.classList.toggle('active', Number(b.dataset.size) === gridSize));
+        buildTiles(false);
+      };
+    });
+
     document.getElementById('btn-play-desktop').onclick = () => triggerBootSequence(null);
     document.getElementById('hud-intro').onclick = returnToIntro;
-    document.getElementById('hud-shuffle').onclick = () => startNewShuffle(true);
-    document.getElementById('hud-size').onclick = cycleGridSize;
+    document.getElementById('hud-hint').onclick = triggerSmartHint;
+    document.getElementById('hud-shuffle').onclick = () => startRound(true);
+    document.getElementById('hud-next').onclick = nextLevelOrSize;
     document.getElementById('hud-theme').onclick = toggleTheme;
-    document.getElementById('hud-tilt').onclick = cycleTilt;
+    document.getElementById('hud-lock').onclick = toggleBoardLock;
     document.getElementById('hud-mute').onclick = (e) => {
       muted = !muted;
       e.target.textContent = muted ? 'Sound: OFF' : 'Sound: ON';
+    };
+    document.getElementById('result-action').onclick = () => {
+      if (isFailed) startRound(true);
+      else if (gameMode === 'challenge') nextLevelOrSize();
+      else startRound(true);
     };
 
     window.addEventListener('resize', () => {
@@ -1324,35 +1590,47 @@
     });
 
     // =========================================================================
-    // 10. INITIALIZE & MAIN LOOP
+    // 12. INITIALIZE & MAIN LOOP
     // =========================================================================
     buildFrame();
-    buildTiles(false);
+    selectChallengeLevel(0);
 
     const clock = new THREE.Clock();
     let elapsed = 0;
     let demoSlideTimer = 0;
-    let lastSecondTick = 0;
+    let lastDisplayedSec = -1;
 
     renderer.setAnimationLoop(() => {
       const dt = Math.min(0.05, clock.getDelta());
       elapsed += dt;
 
-      // Timer update
-      if (timerRunning && !isSolved && appState === 'playing') {
-        timerSec += dt;
-        if (Math.floor(timerSec) !== lastSecondTick) {
-          lastSecondTick = Math.floor(timerSec);
-          updateDisplays();
+      // Timer (Countdown in Challenge Mode, Count-Up in Free Play)
+      if (timerRunning && !isSolved && !isFailed && appState === 'playing') {
+        if (gameMode === 'challenge') {
+          timerSec -= dt;
+          const wholeSec = Math.ceil(timerSec);
+          if (wholeSec !== lastDisplayedSec) {
+            lastDisplayedSec = wholeSec;
+            if (wholeSec > 0 && wholeSec <= 15) playTickSound();
+            updateDisplays();
+          }
+          if (timerSec <= 0) triggerTimeExpired();
+        } else {
+          timerSec += dt;
+          const wholeSec = Math.floor(timerSec);
+          if (wholeSec !== lastDisplayedSec) {
+            lastDisplayedSec = wholeSec;
+            updateDisplays();
+          }
         }
       }
 
-      // Intro Showcase: Gentle 3D Orbit + Automated Demo Tile Slides
+      // Intro Showcase
       if (appState === 'intro') {
         boardRig.rotation.y = Math.sin(elapsed * 0.45) * 0.34;
         boardRig.rotation.x = -0.18 + Math.cos(elapsed * 0.32) * 0.07;
         demoSlideTimer += dt;
-        if (demoSlideTimer > 1.15) {
+        if (demoSlideTimer > 1.1) {
           demoSlideTimer = 0;
           const emptyIdx = board.indexOf(0);
           const er = Math.floor(emptyIdx / gridSize), ec = emptyIdx % gridSize;
@@ -1364,11 +1642,8 @@
           if (adj.length) trySlideTile(adj[Math.floor(Math.random() * adj.length)], true);
         }
       } else if (!grabState.active) {
-        // Smooth glide to chosen tilt preset
         boardRig.rotation.x = THREE.MathUtils.lerp(boardRig.rotation.x, TILT_PRESETS[tiltIdx].rad, dt * 7);
-        if (!renderer.xr.isPresenting) {
-          boardRig.rotation.y = THREE.MathUtils.lerp(boardRig.rotation.y, 0, dt * 7);
-        }
+        if (!renderer.xr.isPresenting) boardRig.rotation.y = THREE.MathUtils.lerp(boardRig.rotation.y, 0, dt * 7);
       }
 
       // Desktop Camera Orbit
@@ -1381,10 +1656,37 @@
         camera.lookAt(target);
       }
 
-      // Smooth Tile Sliding + Diagnostic LED Sweep
+      // Vault Unlatch Finale Animation (Bolts spin out + ZEE Medallion rises)
+      if (isSolved) {
+        vaultUnlatchProg = Math.min(1, vaultUnlatchProg + dt * 1.4);
+        cornerBolts.forEach(b => {
+          b.mesh.rotation.y = vaultUnlatchProg * Math.PI * 3;
+          b.mesh.position.z = b.baseZ + vaultUnlatchProg * 0.016;
+        });
+        if (zeeMedallion) {
+          zeeMedallion.position.y = (FRAME_H / 2 - 0.05) + vaultUnlatchProg * 0.11;
+          zeeMedallion.rotation.z = Math.sin(elapsed * 2.5) * 0.15;
+        }
+      } else {
+        cornerBolts.forEach(b => {
+          b.mesh.position.z = THREE.MathUtils.lerp(b.mesh.position.z, b.baseZ, dt * 8);
+        });
+      }
+
+      // Smooth Tile Sliding + LED Sweep + Smart Hint Pulse
       Object.values(tileMeshes).forEach((tm) => {
         tm.group.position.lerp(tm.targetPos, Math.min(1, dt * 16));
-        if (tm.sweepGlow > 0) {
+        if (tm.hintGlow > 0) {
+          tm.hintGlow -= dt;
+          const pulse = 0.5 + 0.5 * Math.sin(elapsed * 16);
+          tm.pipMat.color.setHex(0x38bdf8);
+          tm.faceMat.emissive.setHex(0x0284c7);
+          tm.faceMat.emissiveIntensity = pulse * 0.65;
+          if (tm.hintGlow <= 0) {
+            tm.faceMat.emissiveIntensity = 0;
+            refreshPipStates();
+          }
+        } else if (tm.sweepGlow > 0) {
           tm.sweepGlow -= dt;
           tm.pipMat.color.setHex(0x38bdf8);
           if (tm.sweepGlow <= 0) refreshPipStates();
@@ -1396,9 +1698,28 @@
         if (b.cooldown > 0) b.cooldown -= dt;
         if (b.pressAnim > 0) {
           b.pressAnim = Math.max(0, b.pressAnim - dt * 5);
-          b.cap.position.x = -b.pressAnim * 0.008;
+          b.cap.position.x = -b.side * b.pressAnim * 0.008;
         }
       });
+
+      // 3D Confetti Physics (Gravity, Air Drag, Flutter & Spin)
+      for (let i = confettiPieces.length - 1; i >= 0; i--) {
+        const p = confettiPieces[i];
+        p.life -= dt;
+        if (p.life <= 0) {
+          scene.remove(p.mesh);
+          p.mesh.material.dispose();
+          confettiPieces.splice(i, 1);
+        } else {
+          p.vel.y -= 1.65 * dt; // Gentle paper gravity
+          p.vel.multiplyScalar(0.985); // Air drag
+          p.mesh.position.addScaledVector(p.vel, dt);
+          p.mesh.position.x += Math.sin(elapsed * 6 + p.flutterPhase) * 0.002;
+          p.mesh.rotation.x += p.rotVel.x * dt;
+          p.mesh.rotation.y += p.rotVel.y * dt;
+          p.mesh.rotation.z += p.rotVel.z * dt;
+        }
+      }
 
       // XR Grab Repositioning
       if (grabState.active && grabState.grabber) {
@@ -1406,7 +1727,7 @@
         targetMat.decompose(boardRig.position, boardRig.quaternion, tmpVecA);
       }
 
-      // XR Controller Direct Poke
+      // XR Controllers & Hand Tracking
       if (renderer.xr.isPresenting) {
         xrControllers.forEach((c) => {
           if (c.pokeCooldown > 0) c.pokeCooldown -= dt;
@@ -1414,7 +1735,6 @@
           checkDirectPoke(tmpVecA, c, c.source);
         });
 
-        // XR Native Hand Tracking Update
         xrHands.forEach((h) => {
           if (h.pokeCooldown > 0) h.pokeCooldown -= dt;
           const joints = h.hand.joints;
@@ -1427,7 +1747,6 @@
             return;
           }
 
-          // Render sleek joint spheres
           for (const jName in joints) {
             const j = joints[jName];
             if (!j.visible) continue;
@@ -1445,10 +1764,8 @@
           h.thumbRing.position.copy(thmTip.position);
           h.thumbRing.quaternion.copy(thmTip.quaternion);
 
-          // Direct Index-Finger Poke
           checkDirectPoke(idxTip.position, h, null);
 
-          // Seated Pinch-Ray & Pinch-Drag Repositioning
           const pinchDist = idxTip.position.distanceTo(thmTip.position);
           if (wrist && wrist.visible) {
             h.handRay.visible = true;
@@ -1464,7 +1781,6 @@
             h.pinchAnchor.quaternion.copy(idxTip.quaternion);
             h.pinchAnchor.updateMatrixWorld(true);
 
-            // Raycast from hand to click a tile/button; otherwise grab the board
             raycaster.ray.origin.copy(idxTip.position);
             raycaster.ray.direction.copy(tmpVecA);
             const tHits = raycaster.intersectObjects(interactiveTiles, false);
